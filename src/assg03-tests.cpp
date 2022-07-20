@@ -193,7 +193,7 @@ TEST_CASE("Task 1: needsAreMet() member function", "[task1]")
   currentAvailable3[2] = 2;
   currentAvailable3[3] = 0;
 
-  SECTION("Task 1: state 03: all processes now candidates", "[task1]")
+  SECTION("Task 1: state 03: no processes are candidates", "[task1]")
   {
     CHECK_FALSE(s3.needsAreMet(0, currentAvailable3));
     CHECK_FALSE(s3.needsAreMet(1, currentAvailable3));
@@ -213,76 +213,186 @@ TEST_CASE("Task 1: needsAreMet() member function", "[task1]")
 TEST_CASE("Task 2: findCandidateProcess() member function", "[task2]")
 {
   // load the state-01 again for tests
-  State s;
-  s.loadState("simfiles/state-01.sim");
+  State s1;
+  s1.loadState("simfiles/state-01.sim");
 
   // initialy for the state-01 file, P1 is the first process whose
   // would be a candidate given the current available resources
   // we will make our own currentAvailable vector, initially it is
   // the same as the available vector
-  int currentAvailable[] = {0, 1, 1};
+  int currentAvailable1[] = {0, 1, 1};
 
   // all process are not yet compeleted for first tests
-  bool completed[] = {false, false, false, false};
+  bool completed1[] = {false, false, false, false};
 
   int candidateProcess;
-  candidateProcess = s.findCandidateProcess(completed, currentAvailable);
-  CHECK(candidateProcess == 1);
+
+  SECTION("Task 2: state 01: P1 is first candidate", "[task1]")
+  {
+    candidateProcess = s1.findCandidateProcess(completed1, currentAvailable1);
+    CHECK(candidateProcess == 1);
+  }
 
   // if P1 is now marked (but available is not changed), no
   // other process is a candidate, so findCandidate should
   // fail
-  completed[1] = true;
-  candidateProcess = s.findCandidateProcess(completed, currentAvailable);
-  CHECK(candidateProcess == NO_CANDIDATE);
+  completed1[1] = true;
+
+  SECTION("Task 2: state 01: P1 complete now no candidates", "[task1]")
+  {
+    candidateProcess = s1.findCandidateProcess(completed1, currentAvailable1);
+    CHECK(candidateProcess == NO_CANDIDATE);
+  }
 
   // if P1 resources were returned, the new current available
   // would be
-  currentAvailable[0] = 6;
-  currentAvailable[1] = 2;
-  currentAvailable[2] = 3;
+  currentAvailable1[0] = 6;
+  currentAvailable1[1] = 2;
+  currentAvailable1[2] = 3;
 
   // which means actually all remainig processes needs can be met,
   // the findCandidate should return the first it finds, P0
-  candidateProcess = s.findCandidateProcess(completed, currentAvailable);
-  CHECK(candidateProcess == 0);
+  SECTION("Task 2: state 01: P0 now first candidate", "[task1]")
+  {
+    candidateProcess = s1.findCandidateProcess(completed1, currentAvailable1);
+    CHECK(candidateProcess == 0);
+  }
 
   // to complete this simulation, P0 resources would be returned,
   // but this won't make a difference, if P0 is marked as complete
   // we should now determine P2 is a canddate
-  completed[0] = true;
-  candidateProcess = s.findCandidateProcess(completed, currentAvailable);
-  CHECK(candidateProcess == 2);
+  completed1[0] = true;
+
+  SECTION("Task 2: state 01: P2 now first candidate", "[task1]")
+  {
+    candidateProcess = s1.findCandidateProcess(completed1, currentAvailable1);
+    CHECK(candidateProcess == 2);
+  }
 
   // to finish, if P2 is now marked, then P3 is final candidate
-  completed[2] = true;
-  candidateProcess = s.findCandidateProcess(completed, currentAvailable);
-  CHECK(candidateProcess == 3);
+  completed1[2] = true;
+
+  SECTION("Task 2: state 01: P3 now final candidate", "[task1]")
+  {
+    candidateProcess = s1.findCandidateProcess(completed1, currentAvailable1);
+    CHECK(candidateProcess == 3);
+  }
 
   // when everything is marked completed,there should be no
   // candidates left
-  completed[3] = true;
-  candidateProcess = s.findCandidateProcess(completed, currentAvailable);
-  CHECK(candidateProcess == NO_CANDIDATE);
+  completed1[3] = true;
+
+  SECTION("Task 2: state 01: all complete so no candidate again", "[task1]")
+  {
+    candidateProcess = s1.findCandidateProcess(completed1, currentAvailable1);
+    CHECK(candidateProcess == NO_CANDIDATE);
+  }
 
   // check no process is complete, but still no candidate because
   // not enough resources for any process to complete
-  completed[0] = false;
-  completed[1] = false;
-  completed[2] = false;
-  completed[3] = false;
+  completed1[0] = false;
+  completed1[1] = false;
+  completed1[2] = false;
+  completed1[3] = false;
 
-  currentAvailable[0] = 0;
-  currentAvailable[1] = 5;
-  currentAvailable[2] = 0;
-  candidateProcess = s.findCandidateProcess(completed, currentAvailable);
-  CHECK(candidateProcess == NO_CANDIDATE);
+  currentAvailable1[0] = 0;
+  currentAvailable1[1] = 5;
+  currentAvailable1[2] = 0;
+
+  SECTION("Task 2: state 01: no candidate because not enough available for any process", "[task1]")
+  {
+    candidateProcess = s1.findCandidateProcess(completed1, currentAvailable1);
+    CHECK(candidateProcess == NO_CANDIDATE);
+  }
 
   // only P3 is a candidate because it is only process that
   // doesn't need any R2
-  currentAvailable[0] = 4;
-  candidateProcess = s.findCandidateProcess(completed, currentAvailable);
-  CHECK(candidateProcess == 3);
+  currentAvailable1[0] = 4;
+
+  SECTION("Task 2: state 01: P3 a candidate again because doesn't need R2", "[task1]")
+  {
+
+    candidateProcess = s1.findCandidateProcess(completed1, currentAvailable1);
+    CHECK(candidateProcess == 3);
+  }
+
+  // load the state-03 to test with differerent number of processes and resources
+  State s3;
+  s3.loadState("simfiles/state-03.sim");
+
+  // initialy for the state 3 the current available is as follows for the 4 resources
+  int currentAvailable3[] = {6, 3, 5, 4};
+
+  // all process are not yet compeleted for first tests
+  bool completed3[] = {false, false, false, false};
+
+  // initially P1, P3 and P4 all can meet needs, P1 should be first to be returned
+  SECTION("Task 2: state 03: P1 is first candidate", "[task1]")
+  {
+    candidateProcess = s3.findCandidateProcess(completed3, currentAvailable3);
+    CHECK(candidateProcess == 1);
+  }
+
+  // simulate releasing P1 resources and marking it complete, P1 has allocated [0 1 1 1]
+  completed3[1] = true;
+  currentAvailable3[1] = 4;
+  currentAvailable3[2] = 5;
+  currentAvailable3[3] = 5;
+
+  // Now P1 is not a candidate because marked as completed, P2, P3, P4 and P5 should all be candidates
+  SECTION("Task 2: state 03: P2 is first candidate not yet completed", "[task1]")
+  {
+    candidateProcess = s3.findCandidateProcess(completed3, currentAvailable3);
+    CHECK(candidateProcess == 2);
+  }
+
+  // release P2 resources and mark complete, P2 has allocated [4 1 0 2]
+  completed3[2] = true;
+  currentAvailable3[0] = 10;
+  currentAvailable3[1] = 5;
+  currentAvailable3[2] = 6;
+  currentAvailable3[3] = 7;
+
+  // Now P1 and P2 are marked, everything remaing P0, P3, P4, P5 are now candidates
+  // P0 should be returned first at this point
+  SECTION("Task 2: state 03: P0 is first candidate now", "[task1]")
+  {
+    candidateProcess = s3.findCandidateProcess(completed3, currentAvailable3);
+    CHECK(candidateProcess == 0);
+  }
+
+  // no need to release more resources at this point, if we mark P0, the P3, P4 and P5 are
+  // candidates.  Mark P0 and each process in turn and see that find candidate returns
+  // expected next process
+  completed3[0] = true;
+  SECTION("Task 2: state 03: P3 is first candidate now", "[task1]")
+  {
+    candidateProcess = s3.findCandidateProcess(completed3, currentAvailable3);
+    CHECK(candidateProcess == 3);
+  }
+
+  completed3[3] = true;
+  SECTION("Task 2: state 03: P4 is first candidate now", "[task1]")
+  {
+    candidateProcess = s3.findCandidateProcess(completed3, currentAvailable3);
+    CHECK(candidateProcess == 4);
+  }
+
+  completed3[4] = true;
+  SECTION("Task 2: state 03: P5 is first candidate now", "[task1]")
+  {
+    candidateProcess = s3.findCandidateProcess(completed3, currentAvailable3);
+    CHECK(candidateProcess == 5);
+  }
+
+  // all processes have now been marked as completed.  find candidate should now
+  // return no candidate process
+  completed3[5] = true;
+  SECTION("Task 2: state 03: all are completed so no more candidates", "[task1]")
+  {
+    candidateProcess = s3.findCandidateProcess(completed3, currentAvailable3);
+    CHECK(candidateProcess == NO_CANDIDATE);
+  }  
 }
 #endif
 
