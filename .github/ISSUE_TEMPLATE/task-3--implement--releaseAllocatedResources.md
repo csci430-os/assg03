@@ -21,6 +21,13 @@ number of allocated resources for each process.  Each row of the matrix is the a
 for a process in the simulation.  Add all of the allocations for the indicated process into
 the available resources.
 
+The pseudocode to implement the `releaseAllocatedResources()` member functions
+would look somthing like the following:
+
+```
+for each resource in the system
+   add the number of allocated resources for the indicated process to the current available resources
+```
 
 **Additional Requirements**
 

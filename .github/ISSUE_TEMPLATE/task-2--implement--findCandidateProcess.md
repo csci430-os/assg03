@@ -26,6 +26,17 @@ needs can be met, then return the process id of the candidate process that was
 found.  If all processes are checked, and none are candidates, return the
 `NO_CANDIDATE` defined constant instead.
 
+The pseudocode for the `findCandidateProcess()` function thus would
+look something like this:
+
+```
+for each process:
+   if process not yet completed and processes needs are met
+      return the process id
+
+otherwise if no process was found, return NO_CANDIDATE
+```
+
 **Additional Requirements**
 
 - You are required to reuse the previous tasks `needsAreMet()` in the implementation
