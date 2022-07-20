@@ -145,11 +145,15 @@ of integers that represent the current number of resources available
 of each resource type. The total number of resources in the system can
 be found in the `numResources` member variable, so it is not passed in
 as a parameter to this function.  You should look at the unit tests
-for this funciton to see how the array representing the currently
-available resources is declared and passed into this member funciton.
+for this function to see how the array representing the currently
+available resources is declared and passed into this member function.
 This function returns a boolean result of true if the process needs
 are met by the `currentAvailable` resources, and false if they are
-not.
+not.  Make sure you put the function signature in the header file, and
+the implementation in the .cpp implementation file.  Also, as a reminder,
+you are required to have function documentation for all functions, so when
+you add this function you need to create the function documentation
+for it (it has not been given to you this time).
 
 Basically, in the `State` object there is a matrix called `need`,
 which holds the (C - A) information.  Each row of this matrix is the
@@ -194,7 +198,7 @@ process.  As mentioned, you need to use the `needsAreMet()` function to
 determine whether or not a particular process can have its needs met
 and is thus a candidate to be run to completion.
 
-The pseudocode for the `findCandidateProcess()` function thus would
+The pseudo-code for the `findCandidateProcess()` function thus would
 look something like this:
 
 ```
@@ -231,8 +235,8 @@ anything explicitly, but of course it does change the
 `currentAvailable` vector to update it with the released resources.
 
 
-The pseudocode to implement the `releaseAllocatedResources()` member functions
-would look somthing like the following:
+The pseudo-code to implement the `releaseAllocatedResources()` member functions
+would look something like the following:
 
 ```
 for each resource in the system
@@ -358,9 +362,7 @@ fix issues with your current submission.
    graded.  0 if not satisfied.
 2. 40 points for keeping code that compiles and runs.  A minimum of 50 points
    will be given if at least the first task is completed and passing tests.
-3. 5 to 10 points are awarded for completing each subsequent task 2-8.
-4. +5 bonus pts if all system tests pass and your process simulator produces
-   correct output for the given system tests.
+3. 15 points are awarded for completing each subsequent tasks 1-4.
 
 ## Program Style and Documentation
 

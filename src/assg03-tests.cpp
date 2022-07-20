@@ -77,49 +77,131 @@ TEST_CASE("Test State loadState() functionality", "[task0]")
 TEST_CASE("Task 1: needsAreMet() member function", "[task1]")
 {
   // load the state-01 again for tests
-  State s;
-  s.loadState("simfiles/state-01.sim");
+  State s1;
+  s1.loadState("simfiles/state-01.sim");
 
   // we will make our own currentAvailable vector, initially it is
   // the same as the available vector
-  int currentAvailable[] = {0, 1, 1};
+  int currentAvailable1[] = {0, 1, 1};
 
-  // only P1 can have its needs met for this current available
-  CHECK(not s.needsAreMet(0, currentAvailable));
-  CHECK(s.needsAreMet(1, currentAvailable));
-  CHECK(not s.needsAreMet(2, currentAvailable));
-  CHECK(not s.needsAreMet(3, currentAvailable));
+  SECTION("Task 1: state 01: Only P1 needs can be met initially", "[task1]")
+  {
+    // only P1 can have its needs met for this current available
+    CHECK_FALSE(s1.needsAreMet(0, currentAvailable1));
+    CHECK(s1.needsAreMet(1, currentAvailable1));
+    CHECK_FALSE(s1.needsAreMet(2, currentAvailable1));
+    CHECK_FALSE(s1.needsAreMet(3, currentAvailable1));
+  }
 
-  // another test, given currentAvailable of 3,2,2
+  // another test, given currentAvailable1 of 3,2,2
   // then P0 and P1 should be true (needs can be met)
-  currentAvailable[0] = 3;
-  currentAvailable[1] = 2;
-  currentAvailable[2] = 2;
+  currentAvailable1[0] = 3;
+  currentAvailable1[1] = 2;
+  currentAvailable1[2] = 2;
 
-  CHECK(s.needsAreMet(0, currentAvailable));
-  CHECK(s.needsAreMet(1, currentAvailable));
-  CHECK(not s.needsAreMet(2, currentAvailable));
-  CHECK(not s.needsAreMet(3, currentAvailable));
+  SECTION("Task 1: state 01: P0 and P1 can be met", "[task1]")
+  {
+    CHECK(s1.needsAreMet(0, currentAvailable1));
+    CHECK(s1.needsAreMet(1, currentAvailable1));
+    CHECK_FALSE(s1.needsAreMet(2, currentAvailable1));
+    CHECK_FALSE(s1.needsAreMet(3, currentAvailable1));
+  }
 
-  // test no process needs can be met
-  currentAvailable[0] = 4;
-  currentAvailable[1] = 2;
-  currentAvailable[2] = 3;
+  // test all process needs can be met
+  currentAvailable1[0] = 4;
+  currentAvailable1[1] = 2;
+  currentAvailable1[2] = 3;
 
-  CHECK(s.needsAreMet(0, currentAvailable));
-  CHECK(s.needsAreMet(1, currentAvailable));
-  CHECK(s.needsAreMet(2, currentAvailable));
-  CHECK(s.needsAreMet(3, currentAvailable));
+  SECTION("Task 1: state 01: all processes are now eligible", "[task1]")
+  {
+    CHECK(s1.needsAreMet(0, currentAvailable1));
+    CHECK(s1.needsAreMet(1, currentAvailable1));
+    CHECK(s1.needsAreMet(2, currentAvailable1));
+    CHECK(s1.needsAreMet(3, currentAvailable1));
+  }
 
-  // test all process needs can be met (max of each need)
-  currentAvailable[0] = 1;
-  currentAvailable[1] = 5;
-  currentAvailable[2] = 0;
+  // test no process needs can be met (max of each need)
+  currentAvailable1[0] = 1;
+  currentAvailable1[1] = 5;
+  currentAvailable1[2] = 0;
 
-  CHECK(not s.needsAreMet(0, currentAvailable));
-  CHECK(not s.needsAreMet(1, currentAvailable));
-  CHECK(not s.needsAreMet(2, currentAvailable));
-  CHECK(not s.needsAreMet(3, currentAvailable));
+  SECTION("Task 1: state 01: no needs can be met", "[task1]")
+  {
+
+    CHECK_FALSE(s1.needsAreMet(0, currentAvailable1));
+    CHECK_FALSE(s1.needsAreMet(1, currentAvailable1));
+    CHECK_FALSE(s1.needsAreMet(2, currentAvailable1));
+    CHECK_FALSE(s1.needsAreMet(3, currentAvailable1));
+  }
+
+  // load the state-03 to test with different number of
+  // processes and resources
+  State s3;
+  s3.loadState("simfiles/state-03.sim");
+
+  // we will make our own currentAvailable1 vector, initially it is
+  // the same as the available vector
+  int currentAvailable3[] = {6, 3, 5, 4};
+
+  SECTION("Task 1: state 03: test with different number of processes and resources, P1, P3 and P4 candidates", "[task1]")
+  {
+    CHECK_FALSE(s3.needsAreMet(0, currentAvailable3));
+    CHECK(s3.needsAreMet(1, currentAvailable3));
+    CHECK_FALSE(s3.needsAreMet(2, currentAvailable3));
+    CHECK(s3.needsAreMet(3, currentAvailable3));
+    CHECK(s3.needsAreMet(4, currentAvailable3));
+    CHECK_FALSE(s3.needsAreMet(5, currentAvailable3));
+  }
+
+  // if P1 runs, current available is now updated and
+  // P1, P2, P3, P4, P5 are all candidates now (but not P0)
+  currentAvailable3[0] = 6;
+  currentAvailable3[1] = 4;
+  currentAvailable3[2] = 6;
+  currentAvailable3[3] = 5;
+
+  SECTION("Task 1: state 03: P1-P5 now all candidates but not P0", "[task1]")
+  {
+    CHECK_FALSE(s3.needsAreMet(0, currentAvailable3));
+    CHECK(s3.needsAreMet(1, currentAvailable3));
+    CHECK(s3.needsAreMet(2, currentAvailable3));
+    CHECK(s3.needsAreMet(3, currentAvailable3));
+    CHECK(s3.needsAreMet(4, currentAvailable3));
+    CHECK(s3.needsAreMet(5, currentAvailable3));
+  }
+
+  // if P2 then runs, current available is now updated and
+  // all of P0, P1, P2, P3, P4, P5 are candidates
+  currentAvailable3[0] = 10;
+  currentAvailable3[1] = 5;
+  currentAvailable3[2] = 6;
+  currentAvailable3[3] = 7;
+
+  SECTION("Task 1: state 03: all processes now candidates", "[task1]")
+  {
+    CHECK(s3.needsAreMet(0, currentAvailable3));
+    CHECK(s3.needsAreMet(1, currentAvailable3));
+    CHECK(s3.needsAreMet(2, currentAvailable3));
+    CHECK(s3.needsAreMet(3, currentAvailable3));
+    CHECK(s3.needsAreMet(4, currentAvailable3));
+    CHECK(s3.needsAreMet(5, currentAvailable3));
+  }
+
+  // set current available for 1 resource to not be met for each process
+  currentAvailable3[0] = 6;
+  currentAvailable3[1] = 3;
+  currentAvailable3[2] = 2;
+  currentAvailable3[3] = 0;
+
+  SECTION("Task 1: state 03: all processes now candidates", "[task1]")
+  {
+    CHECK_FALSE(s3.needsAreMet(0, currentAvailable3));
+    CHECK_FALSE(s3.needsAreMet(1, currentAvailable3));
+    CHECK_FALSE(s3.needsAreMet(2, currentAvailable3));
+    CHECK_FALSE(s3.needsAreMet(3, currentAvailable3));
+    CHECK_FALSE(s3.needsAreMet(4, currentAvailable3));
+    CHECK_FALSE(s3.needsAreMet(5, currentAvailable3));
+  }
 }
 #endif
 
