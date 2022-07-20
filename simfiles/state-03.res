@@ -12,18 +12,18 @@ Allocation matrix A
 P0  2   0   2   1   
 P1  0   1   1   1   
 P2  4   1   0   2   
-P3  1   1   0   0   
-P4  1   0   1   1   
-P5  -1  -1  -1  -1  
+P3  1   0   0   1   
+P4  1   1   0   0   
+P5  1   0   1   1  
 
 Need matrix C-A
     R0  R1  R2  R3  
 P0  7   5   3   4   
 P1  2   1   2   2   
 P2  3   4   4   2   
-P3  2   2   3   2   
-P4  4   2   1   0   
-P5  5   5   5   5   
+P3  2   3   3   1   
+P4  4   1   2   1   
+P5  3   4   3   3   
 
 Resource vector R
     R0  R1  R2  R3  
@@ -31,7 +31,7 @@ Resource vector R
 
 Available vector V
     R0  R1  R2  R3  
-    8   4   6   6   
+    6   3   5   4   
 
 
 State is safe

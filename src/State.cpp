@@ -148,7 +148,9 @@ void State::loadState(string filename)
   if (!simfile.is_open())
   {
     stringstream msg;
-    msg << "<State::loadState> File not found, could not open system state file:" << filename << endl;
+    msg << "<State::loadState> File not found, could not open system state "
+           "file:"
+        << filename << endl;
     throw SimulatorException(msg.str());
   }
 

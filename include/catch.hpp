@@ -2,8 +2,8 @@
  *  Catch v2.13.9
  *  Generated: 2022-04-12 22:37:23.260201
  *  ----------------------------------------------------------
- *  This file has been merged from multiple headers. Please don't edit it directly
- *  Copyright (c) 2022 Two Blue Cubes Ltd. All rights reserved.
+ *  This file has been merged from multiple headers. Please don't edit it
+ * directly Copyright (c) 2022 Two Blue Cubes Ltd. All rights reserved.
  *
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -161,7 +161,8 @@ unsigned int rngSeed();
 // Therefore, `CATCH_INTERNAL_IGNORE_BUT_WARN` is not implemented.
 #if !defined(__ibmxl__) && !defined(__CUDACC__)
 #define CATCH_INTERNAL_IGNORE_BUT_WARN(...)                                                                                                \
-  (void)__builtin_constant_p(__VA_ARGS__) /* NOLINT(cppcoreguidelines-pro-type-vararg, hicpp-vararg) */
+  (void)__builtin_constant_p(__VA_ARGS__) /* NOLINT(cppcoreguidelines-pro-type-vararg,                                                     \
+                                             hicpp-vararg) */
 #endif
 
 #define CATCH_INTERNAL_SUPPRESS_GLOBALS_WARNINGS                                                                                           \
@@ -218,10 +219,13 @@ unsigned int rngSeed();
 #ifdef __CYGWIN__
 
 // Required for some versions of Cygwin to declare gettimeofday
-// see: http://stackoverflow.com/questions/36901803/gettimeofday-not-declared-in-this-scope-cygwin
+// see:
+// http://stackoverflow.com/questions/36901803/gettimeofday-not-declared-in-this-scope-cygwin
 #define _BSD_SOURCE
-// some versions of cygwin (most) do not support std::to_string. Use the libstd check.
-// https://gcc.gnu.org/onlinedocs/gcc-4.8.2/libstdc++/api/a01053_source.html line 2812-2813
+// some versions of cygwin (most) do not support std::to_string. Use the libstd
+// check.
+// https://gcc.gnu.org/onlinedocs/gcc-4.8.2/libstdc++/api/a01053_source.html
+// line 2812-2813
 #if !((__cplusplus >= 201103L) && defined(_GLIBCXX_USE_C99) && !defined(_GLIBCXX_HAVE_BROKEN_VSWPRINTF))
 
 #define CATCH_INTERNAL_CONFIG_NO_CPP11_TO_STRING
@@ -250,7 +254,8 @@ unsigned int rngSeed();
 #define CATCH_INTERNAL_CONFIG_TRADITIONAL_MSVC_PREPROCESSOR
 #endif // MSVC_TRADITIONAL
 
-// Only do this if we're not using clang on Windows, which uses `diagnostic push` & `diagnostic pop`
+// Only do this if we're not using clang on Windows, which uses `diagnostic
+// push` & `diagnostic pop`
 #define CATCH_INTERNAL_START_WARNINGS_SUPPRESSION __pragma(warning(push))
 #define CATCH_INTERNAL_STOP_WARNINGS_SUPPRESSION __pragma(warning(pop))
 #endif // __clang__
@@ -258,7 +263,8 @@ unsigned int rngSeed();
 #endif // _MSC_VER
 
 #if defined(_REENTRANT) || defined(_MSC_VER)
-// Enable async processing, as -pthread is specified or no additional linking is required
+// Enable async processing, as -pthread is specified or no additional linking is
+// required
 #define CATCH_INTERNAL_CONFIG_USE_ASYNC
 #endif // _MSC_VER
 
@@ -329,14 +335,16 @@ unsigned int rngSeed();
 // Check if variant is available and usable
 #if __has_include(<variant>) && defined(CATCH_CPP17_OR_GREATER)
 #if defined(__clang__) && (__clang_major__ < 8)
-// work around clang bug with libstdc++ https://bugs.llvm.org/show_bug.cgi?id=31852
-// fix should be in clang 8, workaround in libstdc++ 8.2
+// work around clang bug with libstdc++
+// https://bugs.llvm.org/show_bug.cgi?id=31852 fix should be in clang 8,
+// workaround in libstdc++ 8.2
 #include <ciso646>
 #if defined(__GLIBCXX__) && defined(_GLIBCXX_RELEASE) && (_GLIBCXX_RELEASE < 9)
 #define CATCH_CONFIG_NO_CPP17_VARIANT
 #else
 #define CATCH_INTERNAL_CONFIG_CPP17_VARIANT
-#endif // defined(__GLIBCXX__) && defined(_GLIBCXX_RELEASE) && (_GLIBCXX_RELEASE < 9)
+#endif // defined(__GLIBCXX__) && defined(_GLIBCXX_RELEASE) && (_GLIBCXX_RELEASE
+       // < 9)
 #else
 #define CATCH_INTERNAL_CONFIG_CPP17_VARIANT
 #endif // defined(__clang__) && (__clang_major__ < 8)
@@ -350,12 +358,14 @@ unsigned int rngSeed();
   !defined(CATCH_INTERNAL_CONFIG_NO_WINDOWS_SEH)
 #define CATCH_CONFIG_WINDOWS_SEH
 #endif
-// This is set by default, because we assume that unix compilers are posix-signal-compatible by default.
+// This is set by default, because we assume that unix compilers are
+// posix-signal-compatible by default.
 #if defined(CATCH_INTERNAL_CONFIG_POSIX_SIGNALS) && !defined(CATCH_INTERNAL_CONFIG_NO_POSIX_SIGNALS) &&                                    \
   !defined(CATCH_CONFIG_NO_POSIX_SIGNALS) && !defined(CATCH_CONFIG_POSIX_SIGNALS)
 #define CATCH_CONFIG_POSIX_SIGNALS
 #endif
-// This is set by default, because we assume that compilers with no wchar_t support are just rare exceptions.
+// This is set by default, because we assume that compilers with no wchar_t
+// support are just rare exceptions.
 #if !defined(CATCH_INTERNAL_CONFIG_NO_WCHAR) && !defined(CATCH_CONFIG_NO_WCHAR) && !defined(CATCH_CONFIG_WCHAR)
 #define CATCH_CONFIG_WCHAR
 #endif
@@ -477,7 +487,8 @@ unsigned int rngSeed();
 #include <iosfwd>
 #include <string>
 
-// We need a dummy global operator<< so we can bring it into Catch namespace later
+// We need a dummy global operator<< so we can bring it into Catch namespace
+// later
 struct Catch_global_namespace_dummy
 {
 };
@@ -764,9 +775,10 @@ constexpr auto operator"" _catch_sr(char const* rawChars, std::size_t size) noex
 #define CATCH_REC_LIST2_UD(f, userdata, x, peek, ...)                                                                                      \
   f(userdata, x) CATCH_DEFER(CATCH_REC_NEXT(peek, CATCH_REC_LIST1_UD))(f, userdata, peek, __VA_ARGS__)
 
-// Applies the function macro `f` to each of the remaining parameters, inserts commas between the results,
-// and passes userdata as the first parameter to each invocation,
-// e.g. CATCH_REC_LIST_UD(f, x, a, b, c) evaluates to f(x, a), f(x, b), f(x, c)
+// Applies the function macro `f` to each of the remaining parameters, inserts
+// commas between the results, and passes userdata as the first parameter to
+// each invocation, e.g. CATCH_REC_LIST_UD(f, x, a, b, c) evaluates to f(x, a),
+// f(x, b), f(x, c)
 #define CATCH_REC_LIST_UD(f, userdata, ...) CATCH_RECURSE(CATCH_REC_LIST2_UD(f, userdata, __VA_ARGS__, ()()(), ()()(), ()()(), 0))
 
 #define CATCH_REC_LIST(f, ...) CATCH_RECURSE(CATCH_REC_LIST2(f, __VA_ARGS__, ()()(), ()()(), ()()(), 0))
@@ -780,7 +792,8 @@ constexpr auto operator"" _catch_sr(char const* rawChars, std::size_t size) noex
 #define INTERNAL_CATCH_STRINGIZE2(...) #__VA_ARGS__
 #define INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS(param) INTERNAL_CATCH_STRINGIZE(INTERNAL_CATCH_REMOVE_PARENS(param))
 #else
-// MSVC is adding extra space and needs another indirection to expand INTERNAL_CATCH_NOINTERNAL_CATCH_DEF
+// MSVC is adding extra space and needs another indirection to expand
+// INTERNAL_CATCH_NOINTERNAL_CATCH_DEF
 #define INTERNAL_CATCH_STRINGIZE2(...) INTERNAL_CATCH_STRINGIZE3(__VA_ARGS__)
 #define INTERNAL_CATCH_STRINGIZE3(...) #__VA_ARGS__
 #define INTERNAL_CATCH_STRINGIZE_WITHOUT_PARENS(param) (INTERNAL_CATCH_STRINGIZE(INTERNAL_CATCH_REMOVE_PARENS(param)) + 1)
@@ -1855,7 +1868,8 @@ inline id performOptionalSelector(id obj, SEL sel)
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable : 4180) // We attempt to stream a function (address) by const&, which MSVC complains about but is harmless
+#pragma warning(disable : 4180) // We attempt to stream a function (address) by const&,
+                                // which MSVC complains about but is harmless
 #endif
 
 namespace Catch {
@@ -2522,7 +2536,8 @@ struct StringMaker<std::chrono::duration<Value, std::ratio<3600>>>
 
 ////////////
 // std::chrono::time_point specialization
-// Generic time_point cannot be specialized, only std::chrono::time_point<system_clock>
+// Generic time_point cannot be specialized, only
+// std::chrono::time_point<system_clock>
 template<typename Clock, typename Duration>
 struct StringMaker<std::chrono::time_point<Clock, Duration>>
 {
@@ -2588,7 +2603,8 @@ struct StringMaker<std::chrono::time_point<std::chrono::system_clock, Duration>>
 #pragma warning(push)
 #pragma warning(disable : 4389) // '==' : signed/unsigned mismatch
 #pragma warning(disable : 4018) // more "signed/unsigned mismatch"
-#pragma warning(disable : 4312) // Converting int to T* using reinterpret_cast (issue on x64 platform)
+#pragma warning(disable : 4312) // Converting int to T* using reinterpret_cast
+                                // (issue on x64 platform)
 #pragma warning(disable : 4180) // qualifier applied to function type has no meaning
 #pragma warning(disable : 4800) // Forcing result to true or false
 #endif
@@ -2719,7 +2735,8 @@ public:
   }
 };
 
-// Specialised comparison functions to handle equality comparisons between ints and pointers (NULL deduces as an int)
+// Specialised comparison functions to handle equality comparisons between ints
+// and pointers (NULL deduces as an int)
 template<typename LhsT, typename RhsT>
 auto compareEqual(LhsT const& lhs, RhsT const& rhs) -> bool
 {
@@ -3724,10 +3741,12 @@ void toLowerInPlace(std::string& s);
 std::string toLower(std::string const& s);
 //! Returns a new string without whitespace at the start/end
 std::string trim(std::string const& str);
-//! Returns a substring of the original ref without whitespace. Beware lifetimes!
+//! Returns a substring of the original ref without whitespace. Beware
+//! lifetimes!
 StringRef trim(StringRef ref);
 
-// !!! Be aware, returns refs into original string - make sure original string outlives them
+// !!! Be aware, returns refs into original string - make sure original string
+// outlives them
 std::vector<StringRef> splitStringRef(StringRef str, char delimiter);
 bool replaceInPlace(std::string& str, std::string const& replaceThis, std::string const& withThis);
 
@@ -3789,7 +3808,8 @@ struct MatcherMethod
 
 #if defined(__OBJC__)
 // Hack to fix Catch GH issue #1661. Could use id for generic Object support.
-// use of const for Object pointers is very uncommon and under ARC it causes some kind of signature mismatch that breaks compilation
+// use of const for Object pointers is very uncommon and under ARC it causes
+// some kind of signature mismatch that breaks compilation
 template<>
 struct MatcherMethod<NSString*>
 {
@@ -4715,7 +4735,8 @@ GeneratorWrapper<std::tuple<Ts...>> table(std::initializer_list<std::tuple<typen
   return values<std::tuple<Ts...>>(tuples);
 }
 
-// Tag type to signal that a generator sequence should convert arguments to a specific type
+// Tag type to signal that a generator sequence should convert arguments to a
+// specific type
 template<typename T>
 struct as
 {
@@ -4922,7 +4943,8 @@ public:
     // 2) We are reading our own cache
 
     // In the first case, we need to poke the underlying generator.
-    // If it happily moves, we are left in that state, otherwise it is time to start reading from our cache
+    // If it happily moves, we are left in that state, otherwise it is time to
+    // start reading from our cache
     if (m_current_repeat == 0)
     {
       const auto success = m_generator.next();
@@ -4933,7 +4955,8 @@ public:
       return m_current_repeat < m_target_repeats;
     }
 
-    // In the second case, we need to move indices forward and check that we haven't run up against the end
+    // In the second case, we need to move indices forward and check that we
+    // haven't run up against the end
     ++m_repeat_index;
     if (m_repeat_index == m_returned.size())
     {
@@ -7056,9 +7079,9 @@ struct CompactReporter : StreamingReporterBase<CompactReporter>
 
 #if defined(_MSC_VER)
 #pragma warning(push)
-#pragma warning(disable : 4061) // Not all labels are EXPLICITLY handled in switch
-                                // Note that 4062 (not all labels are handled
-                                // and default is missing) is enabled
+#pragma warning(disable : 4061) // Not all labels are EXPLICITLY handled in
+                                // switch Note that 4062 (not all labels are
+                                // handled and default is missing) is enabled
 #endif
 
 namespace Catch {
@@ -7668,13 +7691,13 @@ struct is_related : std::is_same<Decay<T>, Decay<U>>
 {
 };
 
-/// We need to reinvent std::function because every piece of code that might add overhead
-/// in a measurement context needs to have consistent performance characteristics so that we
-/// can account for it in the measurement.
-/// Implementations of std::function with optimizations that aren't always applicable, like
-/// small buffer optimizations, are not uncommon.
-/// This is effectively an implementation of std::function without any such optimizations;
-/// it may be slow, but it is consistently slow.
+/// We need to reinvent std::function because every piece of code that might add
+/// overhead in a measurement context needs to have consistent performance
+/// characteristics so that we can account for it in the measurement.
+/// Implementations of std::function with optimizations that aren't always
+/// applicable, like small buffer optimizations, are not uncommon. This is
+/// effectively an implementation of std::function without any such
+/// optimizations; it may be slow, but it is consistently slow.
 struct BenchmarkFunction
 {
 private:
@@ -8381,7 +8404,8 @@ struct Benchmark
     }
     CATCH_CATCH_ALL
     {
-      if (translateActiveException() != Detail::benchmarkErrorMsg) // benchmark errors have been reported, otherwise rethrow.
+      if (translateActiveException() != Detail::benchmarkErrorMsg) // benchmark errors have been reported,
+                                                                   // otherwise rethrow.
         std::rethrow_exception(std::current_exception());
     }
   }
@@ -8722,7 +8746,8 @@ struct LeakDetector
 namespace {
 double erf_inv(double x)
 {
-  // Code accompanying the article "Approximating the erfinv function" in GPU Computing Gems, Volume 2
+  // Code accompanying the article "Approximating the erfinv function" in GPU
+  // Computing Gems, Volume 2
   double w, p;
 
   w = -log((1.0 - x) * (1.0 + x));
@@ -8980,8 +9005,9 @@ std::string Approx::toString() const
 
 bool Approx::equalityComparisonImpl(const double other) const
 {
-  // First try with fixed margin, then compute margin based on epsilon, scale and Approx's value
-  // Thanks to Richard Harris for his help refining the scaled margin value
+  // First try with fixed margin, then compute margin based on epsilon, scale
+  // and Approx's value Thanks to Richard Harris for his help refining the
+  // scaled margin value
   return marginComparison(m_value, other, m_margin) ||
          marginComparison(m_value, other, m_epsilon * (m_scale + std::fabs(std::isinf(m_value) ? 0 : m_value)));
 }
@@ -9375,8 +9401,9 @@ void AssertionHandler::handleThrowingCallSkipped()
   m_resultCapture.handleNonExpr(m_assertionInfo, ResultWas::Ok, m_reaction);
 }
 
-// This is the overload that takes a string and infers the Equals matcher from it
-// The more general overload, that takes any string matcher, is in catch_capture_matchers.cpp
+// This is the overload that takes a string and infers the Equals matcher from
+// it The more general overload, that takes any string matcher, is in
+// catch_capture_matchers.cpp
 void handleExceptionMatchExpr(AssertionHandler& handler, std::string const& str, StringRef const& matcherString)
 {
   handleExceptionMatchExpr(handler, Matchers::Equals(str), matcherString);
@@ -9508,8 +9535,9 @@ namespace Catch {
 using StringMatcher = Matchers::Impl::MatcherBase<std::string>;
 
 // This is the general overload that takes a any string matcher
-// There is another overload, in catch_assertionhandler.h/.cpp, that only takes a string and infers
-// the Equals matcher (so the header does not mention matchers)
+// There is another overload, in catch_assertionhandler.h/.cpp, that only takes
+// a string and infers the Equals matcher (so the header does not mention
+// matchers)
 void handleExceptionMatchExpr(AssertionHandler& handler, StringMatcher const& matcher, StringRef const& matcherString)
 {
   std::string exceptionMessage = Catch::translateActiveException();
@@ -9525,7 +9553,8 @@ void handleExceptionMatchExpr(AssertionHandler& handler, StringMatcher const& ma
 
 // start catch_clara.h
 
-// Use Catch's value for console width (store Clara's off to the side, if present)
+// Use Catch's value for console width (store Clara's off to the side, if
+// present)
 #ifdef CLARA_CONFIG_CONSOLE_WIDTH
 #define CATCH_TEMP_CLARA_CONFIG_CONSOLE_WIDTH CATCH_CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH
 #undef CATCH_CLARA_TEXTFLOW_CONFIG_CONSOLE_WIDTH
@@ -9992,7 +10021,8 @@ namespace Catch {
 namespace clara {
 namespace detail {
 
-// Traits for extracting arg and return type of lambdas (for single argument lambdas)
+// Traits for extracting arg and return type of lambdas (for single argument
+// lambdas)
 template<typename L>
 struct UnaryLambdaTraits : UnaryLambdaTraits<decltype(&L::operator())>
 {
@@ -10014,7 +10044,8 @@ struct UnaryLambdaTraits<ReturnT (ClassT::*)(ArgT) const>
 
 class TokenStream;
 
-// Transport for raw args (copied from main args, or supplied via init list for testing)
+// Transport for raw args (copied from main args, or supplied via init list for
+// testing)
 class Args
 {
   friend TokenStream;
@@ -10040,8 +10071,9 @@ public:
   }
 };
 
-// Wraps a token coming from a token stream. These may not directly correspond to strings as a single string
-// may encode an option + its argument if the : or = form is used
+// Wraps a token coming from a token stream. These may not directly correspond
+// to strings as a single string may encode an option + its argument if the : or
+// = form is used
 enum class TokenType
 {
   Option,
@@ -10062,7 +10094,8 @@ inline auto isOptPrefix(char c) -> bool
     ;
 }
 
-// Abstracts iterators into args as a stream of tokens, with option arguments uniformly handled
+// Abstracts iterators into args as a stream of tokens, with option arguments
+// uniformly handled
 class TokenStream
 {
   using Iterator = std::vector<std::string>::const_iterator;
@@ -10687,7 +10720,8 @@ public:
     m_ref = std::make_shared<BoundLambda<LambdaT>>(lambda);
   }
 
-  // The exe name is not parsed out of the normal tokens, but is handled specially
+  // The exe name is not parsed out of the normal tokens, but is handled
+  // specially
   auto parse(std::string const&, TokenStream const& tokens) const -> InternalParseResult override
   {
     return InternalParseResult::ok(ParseState(ParseResultType::NoMatch, tokens));
@@ -11028,7 +11062,8 @@ struct Parser : ParserBase
     };
     const size_t totalParsers = m_options.size() + m_args.size();
     assert(totalParsers < 512);
-    // ParserInfo parseInfos[totalParsers]; // <-- this is what we really want to do
+    // ParserInfo parseInfos[totalParsers]; // <-- this is what we really want
+    // to do
     ParserInfo parseInfos[512];
 
     {
@@ -11260,8 +11295,8 @@ clara::Parser makeCommandLineParser(ConfigData& config)
     Opt(setWarning, "warning name")["-w"]["--warn"]("enable warnings") |
     Opt([&](bool flag) { config.showDurations = flag ? ShowDurations::Always : ShowDurations::Never; }, "yes|no")["-d"]["--durations"](
       "show test durations") |
-    Opt(config.minDuration, "seconds")["-D"]["--min-duration"](
-      "show test durations for tests taking at least the given number of seconds") |
+    Opt(config.minDuration, "seconds")["-D"]["--min-duration"]("show test durations for tests taking at least the given number of "
+                                                               "seconds") |
     Opt(loadTestNamesFromFile, "filename")["-f"]["--input-file"]("load test names to run from a file") |
     Opt(config.filenamesAsTags)["-#"]["--filenames-as-tags"]("adds a tag for the filename") |
     Opt(config.sectionsToRun, "section name")["-c"]["--section"]("specify section to run") |
@@ -11276,10 +11311,12 @@ clara::Parser makeCommandLineParser(ConfigData& config)
     Opt(config.benchmarkSamples, "samples")["--benchmark-samples"]("number of samples to collect (default: 100)") |
     Opt(config.benchmarkResamples, "resamples")["--benchmark-resamples"]("number of resamples for the bootstrap (default: 100000)") |
     Opt(config.benchmarkConfidenceInterval, "confidence interval")["--benchmark-confidence-interval"](
-      "confidence interval for the bootstrap (between 0 and 1, default: 0.95)") |
+      "confidence interval for the bootstrap (between 0 and 1, default: "
+      "0.95)") |
     Opt(config.benchmarkNoAnalysis)["--benchmark-no-analysis"]("perform only measurements; do not perform any analysis") |
     Opt(config.benchmarkWarmupTime, "benchmarkWarmupTime")["--benchmark-warmup-time"](
-      "amount of time in milliseconds spent on warming up each test (default: 100)") |
+      "amount of time in milliseconds spent on warming up each test "
+      "(default: 100)") |
     Arg(config.testsOrTags, "test name|pattern|tags")("which test or tests to use");
 
   return cli;
@@ -11980,7 +12017,9 @@ bool isDebuggerActive()
   size = sizeof(info);
   if (sysctl(mib, sizeof(mib) / sizeof(*mib), &info, &size, nullptr, 0) != 0)
   {
-    Catch::cerr() << "\n** Call to sysctl failed - unable to determine if debugger is active **\n" << std::endl;
+    Catch::cerr() << "\n** Call to sysctl failed - unable to determine if "
+                     "debugger is active **\n"
+                  << std::endl;
     return false;
   }
 
@@ -11991,7 +12030,8 @@ bool isDebuggerActive()
 #else
 bool isDebuggerActive()
 {
-  // We need to find another way to determine this for non-appleclang compilers on macOS
+  // We need to find another way to determine this for non-appleclang compilers
+  // on macOS
   return false;
 }
 #endif
@@ -12322,12 +12362,14 @@ std::string ExceptionTranslatorRegistry::tryTranslators() const
 #else // ^^ Exceptions are enabled // Exceptions are disabled vv
 std::string ExceptionTranslatorRegistry::translateActiveException() const
 {
-  CATCH_INTERNAL_ERROR("Attempted to translate active exception under CATCH_CONFIG_DISABLE_EXCEPTIONS!");
+  CATCH_INTERNAL_ERROR("Attempted to translate active exception under "
+                       "CATCH_CONFIG_DISABLE_EXCEPTIONS!");
 }
 
 std::string ExceptionTranslatorRegistry::tryTranslators() const
 {
-  CATCH_INTERNAL_ERROR("Attempted to use exception translators under CATCH_CONFIG_DISABLE_EXCEPTIONS!");
+  CATCH_INTERNAL_ERROR("Attempted to use exception translators under "
+                       "CATCH_CONFIG_DISABLE_EXCEPTIONS!");
 }
 #endif
 
@@ -14274,7 +14316,8 @@ public: // IMutableRegistryHub
 #if !defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
     m_exceptionRegistry.add(std::current_exception());
 #else
-    CATCH_INTERNAL_ERROR("Attempted to register active exception under CATCH_CONFIG_DISABLE_EXCEPTIONS!");
+    CATCH_INTERNAL_ERROR("Attempted to register active exception under "
+                         "CATCH_CONFIG_DISABLE_EXCEPTIONS!");
 #endif
   }
   IMutableEnumValuesRegistry& getMutableEnumValuesRegistry() override
@@ -14624,8 +14667,9 @@ void RunContext::assertionEnded(AssertionResult const& result)
     m_lastAssertionPassed = true;
   }
 
-  // We have no use for the return value (whether messages should be cleared), because messages were made scoped
-  // and should be let to clear themselves out.
+  // We have no use for the return value (whether messages should be cleared),
+  // because messages were made scoped and should be let to clear themselves
+  // out.
   static_cast<void>(m_reporter->assertionEnded(AssertionStats(result, m_messages, m_totals)));
 
   if (result.getResultType() != ResultWas::Warning)
@@ -14760,8 +14804,8 @@ void RunContext::handleFatalErrorCondition(StringRef message)
   // First notify reporter that bad things happened
   m_reporter->fatalErrorEncountered(message);
 
-  // Don't rebuild the result -- the stringification itself can cause more fatal errors
-  // Instead, fake a result data.
+  // Don't rebuild the result -- the stringification itself can cause more fatal
+  // errors Instead, fake a result data.
   AssertionResultData tempResult(ResultWas::FatalErrorCondition, {false});
   tempResult.message = static_cast<std::string>(message);
   AssertionResult result(m_lastAssertionInfo, tempResult);
@@ -14849,8 +14893,8 @@ void RunContext::runCurrentTest(std::string& redirectedCout, std::string& redire
   }
   CATCH_CATCH_ALL
   {
-    // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE assertions
-    // are reported without translation at the point of origin.
+    // Under CATCH_CONFIG_FAST_COMPILE, unexpected exceptions under REQUIRE
+    // assertions are reported without translation at the point of origin.
     if (m_shouldReportUnexpected)
     {
       AssertionReaction dummyReaction;
@@ -15512,7 +15556,8 @@ void StartupExceptionRegistry::add(std::exception_ptr const& exception) noexcept
   }
   CATCH_CATCH_ALL
   {
-    // If we run out of memory during start-up there's really not a lot more we can do about it
+    // If we run out of memory during start-up there's really not a lot more we
+    // can do about it
     std::terminate();
   }
 }
@@ -15680,7 +15725,8 @@ auto makeStream(StringRef const& filename) -> IStream const*
     return new Detail::FileStream(filename);
 }
 
-// This class encapsulates the idea of a pool of ostringstreams that can be reused.
+// This class encapsulates the idea of a pool of ostringstreams that can be
+// reused.
 struct StringStreams
 {
   std::vector<std::unique_ptr<std::ostringstream>> m_streams;
@@ -15729,7 +15775,8 @@ auto ReusableStringStream::str() const -> std::string
 
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement these functions
+#ifndef CATCH_CONFIG_NOSTDOUT // If you #define this you must implement these
+                              // functions
 std::ostream& cout()
 {
   return std::cout;
@@ -15942,7 +15989,8 @@ RegistrarForTagAliases::RegistrarForTagAliases(char const* alias, char const* ta
   }
   CATCH_CATCH_ALL
   {
-    // Do not throw when constructing global objects, instead register the exception to be processed later
+    // Do not throw when constructing global objects, instead register the
+    // exception to be processed later
     getMutableRegistryHub().registerStartupException();
   }
 }
@@ -16034,7 +16082,8 @@ bool isReservedTag(std::string const& tag)
 void enforceNotReservedTag(std::string const& tag, SourceLineInfo const& _lineInfo)
 {
   CATCH_ENFORCE(!isReservedTag(tag), "Tag name: [" << tag << "] is not allowed.\n"
-                                                   << "Tag names starting with non alphanumeric characters are reserved\n"
+                                                   << "Tag names starting with non alphanumeric "
+                                                      "characters are reserved\n"
                                                    << _lineInfo);
 }
 } // namespace
@@ -16678,7 +16727,8 @@ AutoReg::AutoReg(
   }
   CATCH_CATCH_ALL
   {
-    // Do not throw when constructing global objects, instead register the exception to be processed later
+    // Do not throw when constructing global objects, instead register the
+    // exception to be processed later
     getMutableRegistryHub().registerStartupException();
   }
 }
@@ -17098,7 +17148,8 @@ auto estimateClockResolution() -> uint64_t
     }
   }
 
-  // We're just taking the mean, here. To do better we could take the std. dev and exclude outliers
+  // We're just taking the mean, here. To do better we could take the std. dev
+  // and exclude outliers
   // - and potentially do more iterations if there's a high variance.
   return sum / iterations;
 }
@@ -17769,7 +17820,8 @@ void XmlEncode::encodeTo(std::ostream& os) const
       // Check for control characters and invalid utf-8
 
       // Escape control characters in standard ascii
-      // see http://stackoverflow.com/questions/404107/why-are-control-characters-illegal-in-xml-1-0
+      // see
+      // http://stackoverflow.com/questions/404107/why-are-control-characters-illegal-in-xml-1-0
       if (c < 0x09 || (c > 0x0D && c < 0x20) || c == 0x7F)
       {
         hexEscapeChar(os, c);
@@ -17785,8 +17837,8 @@ void XmlEncode::encodeTo(std::ostream& os) const
 
       // UTF-8 territory
       // Check if the encoding is valid and if it is not, hex escape bytes.
-      // Important: We do not check the exact decoded values for validity, only the encoding format
-      // First check that this bytes is a valid lead byte:
+      // Important: We do not check the exact decoded values for validity, only
+      // the encoding format First check that this bytes is a valid lead byte:
       // This means that it is not encoded as 1111 1XXX
       // Or as 10XX XXXX
       if (c < 0xC0 || c >= 0xF8)
@@ -18446,8 +18498,9 @@ CATCH_REGISTER_REPORTER("compact", CompactReporter)
 
 #if defined(_MSC_VER)
 #pragma warning(push)
-#pragma warning(disable : 4061) // Not all labels are EXPLICITLY handled in switch
-                                // Note that 4062 (not all labels are handled and default is missing) is enabled
+#pragma warning(disable : 4061) // Not all labels are EXPLICITLY handled in
+                                // switch Note that 4062 (not all labels are
+                                // handled and default is missing) is enabled
 #endif
 
 #if defined(__clang__)
@@ -19275,7 +19328,8 @@ JunitReporter::~JunitReporter() {}
 
 std::string JunitReporter::getDescription()
 {
-  return "Reports test results in an XML format that looks like Ant's junitreport target";
+  return "Reports test results in an XML format that looks like Ant's "
+         "junitreport target";
 }
 
 void JunitReporter::noMatchingTestCases(std::string const& /*spec*/) {}
@@ -19710,9 +19764,9 @@ bool ListeningReporter::isMulti() const
 
 #if defined(_MSC_VER)
 #pragma warning(push)
-#pragma warning(disable : 4061) // Not all labels are EXPLICITLY handled in switch
-                                // Note that 4062 (not all labels are handled
-                                // and default is missing) is enabled
+#pragma warning(disable : 4061) // Not all labels are EXPLICITLY handled in
+                                // switch Note that 4062 (not all labels are
+                                // handled and default is missing) is enabled
 #endif
 
 namespace Catch {
@@ -20050,7 +20104,8 @@ int main(int argc, char* const argv[])
 
 #if !defined(CATCH_CONFIG_DISABLE)
 //////
-// If this config identifier is defined then all CATCH macros are prefixed with CATCH_
+// If this config identifier is defined then all CATCH macros are prefixed with
+// CATCH_
 #ifdef CATCH_CONFIG_PREFIX_ALL
 
 #define CATCH_REQUIRE(...) INTERNAL_CATCH_TEST("CATCH_REQUIRE", Catch::ResultDisposition::Normal, __VA_ARGS__)
@@ -20167,7 +20222,8 @@ int main(int argc, char* const argv[])
 #define CATCH_BENCHMARK_ADVANCED(name) INTERNAL_CATCH_BENCHMARK_ADVANCED(INTERNAL_CATCH_UNIQUE_NAME(C_A_T_C_H_B_E_N_C_H_), name)
 #endif // CATCH_CONFIG_ENABLE_BENCHMARKING
 
-// If CATCH_CONFIG_PREFIX_ALL is not defined then the CATCH_ prefix is not required
+// If CATCH_CONFIG_PREFIX_ALL is not defined then the CATCH_ prefix is not
+// required
 #else
 
 #define REQUIRE(...) INTERNAL_CATCH_TEST("REQUIRE", Catch::ResultDisposition::Normal, __VA_ARGS__)
@@ -20295,7 +20351,8 @@ using Catch::Detail::Approx;
 #else // CATCH_CONFIG_DISABLE
 
 //////
-// If this config identifier is defined then all CATCH macros are prefixed with CATCH_
+// If this config identifier is defined then all CATCH macros are prefixed with
+// CATCH_
 #ifdef CATCH_CONFIG_PREFIX_ALL
 
 #define CATCH_REQUIRE(...) (void)(0)
@@ -20383,7 +20440,8 @@ using Catch::Detail::Approx;
 #define CATCH_STATIC_REQUIRE(...) (void)(0)
 #define CATCH_STATIC_REQUIRE_FALSE(...) (void)(0)
 
-// If CATCH_CONFIG_PREFIX_ALL is not defined then the CATCH_ prefix is not required
+// If CATCH_CONFIG_PREFIX_ALL is not defined then the CATCH_ prefix is not
+// required
 #else
 
 #define REQUIRE(...) (void)(0)

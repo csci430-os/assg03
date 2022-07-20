@@ -220,7 +220,7 @@ The next test case tests the `releaseAllocatedResources()` member function.
 Define the task3 test cases and declare and implement the function for this task.
 
 This function will be called after a process is selected to run to
-completion, to return its currently allocated resources back to the
+completion to return its currently allocated resources back to the
 `currentAvailable` resources. This function takes a process id/index
 as its first parameter, and the same `currentAvailable` array as its
 second parameter that we have been using int the previous function.
@@ -230,7 +230,7 @@ allocations of resources for each process.  In this function you
 basically need to add the allocations of the indicated process to the
 `currentAvailable` vector of resources, which simulates the resources
 being released and returned back to the system to be used by other
-processes.  This function is a void function, so it doesn't return
+processes.  This function is a `void` function, so it doesn't return
 anything explicitly, but of course it does change the
 `currentAvailable` vector to update it with the released resources.
 
@@ -286,6 +286,8 @@ steps you need to perform are as follows:
    processes did not complete, then the state is unsafe and you return false.
 ```
 
+Once you are satisfied with your solution, make a commit for task 4 and push it to
+your feedback pull request.
 
 # System Tests: Putting it all Together
 
@@ -300,15 +302,51 @@ that is checked to see if it is safe or not.
 
 ```
 $ ./sim
-Usage: sim xxx
-TBD
+Usage: sim state.sim
+Run Resource Allocation Denial (Banker's Algorithm) on simulation
+state file.  Return safe if the state is safe, or unsafe if not.
+
+
+state.sim    Filename describing system state to load and
+             test if it is safe or unsafe.
 ```
 
 So for example, you can run the simulation from the command line for the first
 simulation state like this
 
 ```
-TBD
+$ ./sim simfiles/state-01.sim 
+Claim matrix C
+    R0  R1  R2  
+P0  3   2   2   
+P1  6   1   3   
+P2  3   1   4   
+P3  4   2   2   
+
+Allocation matrix A
+    R0  R1  R2  
+P0  1   0   0   
+P1  6   1   2   
+P2  2   1   1   
+P3  0   0   2   
+
+Need matrix C-A
+    R0  R1  R2  
+P0  2   2   2   
+P1  0   0   1   
+P2  1   0   3   
+P3  4   2   0   
+
+Resource vector R
+    R0  R1  R2  
+    9   3   6   
+
+Available vector V
+    R0  R1  R2  
+    0   1   1   
+
+
+State is safe
 ```
 
 
@@ -319,9 +357,19 @@ tests like this.
 
 ```
 $ make system-tests
-./run-system-tests
-TBD
+./scripts/run-system-tests
+System test state-01 quantum : PASSED
+System test state-02 quantum : PASSED
+System test state-03 quantum : PASSED
+System test state-04 quantum : PASSED
+===============================================================================
+All system tests passed     (4 tests passed of 4 system tests)
+
 ```
+
+For this assignment there is a final 5 points held back for getting the system tests to pass.  The final output of whether the state is safe or unsafe
+is not being given.  You need to determine where that should happen, and display the appropriate results, to get the system tests to pass and get
+the final 5 points (Hint: look in the `assg03-sim.cpp` file).
 
 # Assignment Submission
 
@@ -360,9 +408,11 @@ fix issues with your current submission.
 
 1. Your program must compile, run and produce some sort of output to be
    graded.  0 if not satisfied.
-2. 40 points for keeping code that compiles and runs.  A minimum of 50 points
+2. 35 points for keeping code that compiles and runs.  A minimum of 50 points
    will be given if at least the first task is completed and passing tests.
 3. 15 points are awarded for completing each subsequent tasks 1-4.
+4. 5 points will be given for finishing the simulation and getting all
+   system tests to pass for this assignment.
 
 ## Program Style and Documentation
 
