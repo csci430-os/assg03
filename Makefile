@@ -21,4 +21,6 @@ assg_doc = ${PROJECT_NAME}.pdf
 include include/Makefile.inc
 
 # assignment header file specific dependencies
+${OBJ_DIR}/${PROJECT_NAME}-tests.o: ${INC_DIR}/State.hpp
+${OBJ_DIR}/${PROJECT_NAME}-sim.o: ${INC_DIR}/State.hpp
 ${OBJ_DIR}/State.o: ${INC_DIR}/State.hpp ${SRC_DIR}/State.cpp
