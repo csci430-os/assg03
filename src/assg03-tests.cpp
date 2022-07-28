@@ -593,7 +593,7 @@ TEST_CASE("Task 4: isSafe() member function", "[task4]")
   // load the state-01 again for tests
   // state 01 is safe, so check it
   State s;
-  SECTION("tASK 4: test state 01 is safe", "[task4]")
+  SECTION("Task 4: test state 01 is safe", "[task4]")
   {
     s.loadState("simfiles/state-01.sim");
     CHECK(s.isSafe());
@@ -601,7 +601,7 @@ TEST_CASE("Task 4: isSafe() member function", "[task4]")
 
   // load the state-02
   // state 02 is unsafe, so check it
-  SECTION("tASK 4: test state 02 is NOT safe", "[task4]")
+  SECTION("Task 4: test state 02 is NOT safe", "[task4]")
   {
     s.loadState("simfiles/state-02.sim");
     CHECK_FALSE(s.isSafe());
@@ -609,7 +609,7 @@ TEST_CASE("Task 4: isSafe() member function", "[task4]")
 
   // load the state-03
   // state 03 is safe, so check it
-  SECTION("tASK 4: test state 03 is safe", "[task4]")
+  SECTION("Task 4: test state 03 is safe", "[task4]")
   {
     s.loadState("simfiles/state-03.sim");
     CHECK(s.isSafe());
@@ -617,9 +617,19 @@ TEST_CASE("Task 4: isSafe() member function", "[task4]")
 
   // load the state-04
   // state 04 is unsafe, so check it
-  SECTION("tASK 4: test state 04 is NOT safe", "[task4]")
+  SECTION("Task 4: test state 04 is NOT safe", "[task4]")
   {
     s.loadState("simfiles/state-04.sim");
+    CHECK_FALSE(s.isSafe());
+  }
+
+  // load the state-05
+  // state 05 is unsafe, so check it
+  // This test checks for implementations that do not correctly detect if 1 or more processes
+  // are initially candidates, but not all processes are candidates
+  SECTION("Task 4: test state 05 is NOT safe", "[task4]")
+  {
+    s.loadState("simfiles/state-05.sim");
     CHECK_FALSE(s.isSafe());
   }
 }
